@@ -1,3 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #f8fafb;
+    color: #1e293b;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
+  /* Focus ring */
+  *:focus-visible {
+    outline: 2px solid rgba(6, 196, 170, 0.5);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+}
+
+@layer components {
+  /* Glass morphism panel */
+  .glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .glass-dark {
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    background: linear-gradient(135deg, #06c4aa 0%, #0d524c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Shimmer loading effect */
+  .shimmer-bg {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  /* Premium input style */
+  .input-premium {
+    @apply w-full px-5 py-3.5 bg-slate-50/80 border border-slate-200/60 rounded-2xl
+           text-sm font-semibold text-slate-800 placeholder-slate-400
+           transition-all duration-200
+           focus:bg-white focus:border-brand-400 focus:ring-4 focus:ring-brand-500/10 focus:outline-none
+           hover:border-slate-300;
+  }
+
+  /* Premium button base */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 
+           bg-gradient-to-r from-teal-600 to-brand-600 text-white 
+           rounded-2xl font-extrabold text-sm
+           shadow-lg shadow-teal-500/20
+           transition-all duration-200 
+           hover:shadow-xl hover:shadow-teal-500/30 hover:scale-[1.02]
+           active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100;
+  }
+
+  /* Pill toggle button */
+  .pill-toggle {
+    @apply px-4 py-2.5 rounded-xl text-xs font-extrabold
+           transition-all duration-200 transform
+           active:scale-95;
+  }
+  .pill-toggle-active {
+    @apply bg-gradient-to-br from-teal-500 to-teal-700 text-white 
+           shadow-lg shadow-teal-500/25 ring-2 ring-teal-300/30;
+  }
+  .pill-toggle-inactive {
+    @apply bg-slate-100/80 text-slate-500 hover:bg-slate-200/80 hover:text-slate-700;
+  }
+  .pill-toggle-danger {
+    @apply bg-gradient-to-br from-red-500 to-rose-600 text-white 
+           shadow-lg shadow-red-500/25 ring-2 ring-red-300/30;
+  }
+
+  /* Card styles */
+  .card-elevated {
+    @apply bg-white rounded-[1.75rem] border border-slate-100/80 
+           shadow-card transition-shadow duration-300
+           hover:shadow-card-hover;
+  }
+
+  /* Section divider */
+  .section-line {
+    @apply h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent;
+  }
+}
+
+@layer utilities {
+  /* Stagger animation delays */
+  .delay-75 { animation-delay: 75ms; }
+  .delay-150 { animation-delay: 150ms; }
+  .delay-225 { animation-delay: 225ms; }
+  .delay-300 { animation-delay: 300ms; }
+}
+
+/* Print styles — RBSK Field Survey Report */
+@media print {
+  /* Reset */
+  *, *::before, *::after { box-shadow: none !important; }
+  body { background: white !important; font-family: 'Inter', sans-serif !important; color: #0f172a !important; }
+
+  /* Hide all UI chrome */
+  nav,
+  aside,
+  .no-print,
+  .print-hide { display: none !important; }
+
+  /* Hide the page wrapper padding / gradients */
+  body > #root > div { background: white !important; padding: 0 !important; }
+
+  /* Show the print-only header */
+  .print-header { display: block !important; }
+
+  /* Card becomes flat */
+  .card-elevated {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Remove page background wrappers */
+  .print-page {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: white !important;
+  }
+
+  /* Tables / grids print full width */
+  .grid { display: block !important; }
+  .grid > * { margin-bottom: 12pt !important; break-inside: avoid; }
+
+  /* Keep key sections together */
+  .print-section { break-inside: avoid; page-break-inside: avoid; }
+
+  /* Remove gradients from badges  */
+  [class*="bg-gradient"] { background: white !important; border: 1pt solid #94a3b8 !important; }
+
+  /* Ensure text stays dark */
+  [class*="text-slate-4"],
+  [class*="text-slate-5"] { color: #475569 !important; }
+
+  /* Page margins */
+  @page {
+    margin: 18mm 15mm;
+    size: A4;
+  }
+}
+

@@ -1,23 +1,31 @@
-// Import the functions you need from the SDKs you need
+// firebase.js — Firebase initialization with offline persistence
 import { initializeApp } from "firebase/app";
+import { getFirestore, enableIndexedDbPersistence } from "firebase/firestore";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
-// 1. Add the Firestore SDK
-import { getFirestore } from "firebase/firestore";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBxJliGvvcGS6r4VaZBqsMW4zfNlCS8d0k",
-  authDomain: "rbsk-225ae.firebaseapp.com",
-  projectId: "rbsk-225ae",
-  storageBucket: "rbsk-225ae.firebasestorage.app",
-  messagingSenderId: "907287829805",
-  appId: "1:907287829805:web:f2618ef69b63633b3347a4",
-  measurementId: "G-N4R0DCJJVB"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-// 2. Initialize Firestore and EXPORT 'db' so App.js can find it
 export const db = getFirestore(app);
+export const auth = getAuth(app);
+export const googleProvider = new GoogleAuthProvider();
+
+// Enable offline persistence for Firestore
+enableIndexedDbPersistence(db).catch((err) => {
+  if (err.code === 'failed-precondition') {
+    console.warn('Firestore persistence failed: Multiple tabs open. Offline mode disabled.');
+  } else if (err.code === 'unimplemented') {
+    console.warn('Firestore persistence not available in this browser.');
+  }
+});
